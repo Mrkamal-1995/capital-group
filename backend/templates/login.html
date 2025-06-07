@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .split-screen {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .hero-left {
+            flex: 1;
+            background: url('https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .hero-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+        }
+
+        .logo-container img {
+            width: 100px;
+            height: 80px;
+        }
+
+        .login-right {
+            flex: 1;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 2rem;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .login-form input {
+            width: 90%;
+            padding: 0.75rem 1rem;
+            margin: 0.625rem 0;
+            background: #2c2c2c;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .login-form input:focus {
+            border-color: #1e90ff;
+            box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.4);
+            background: #2a2a2a;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #3ca1ff;
+        }
+
+        .login-form .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .login-form .register-link a {
+            color: #1e90ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-form .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .alert-success {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .alert-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        /* ✅ Responsive for phones and tablets */
+        @media (max-width: 768px) {
+            .split-screen {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .hero-left, .login-right {
+                width: 100%;
+                height: auto;
+                min-height: 300px;
+                flex: none;
+            }
+
+            .logo-container {
+                top: 0.5rem;
+                left: 0.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .login-form {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-screen">
+        <div class="hero-left">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Capital Group Logo">
+            </div>
+            <div class="hero-content">
+                <h1>Welcome to Capital Group</h1>
+                <p>Make smarter trading decisions with real-time data and tools.</p>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-form">
+                <h2>Login to Your Trading Account</h2>
+                <form method="POST" action="/login">
+                    <input type="text" name="username" placeholder="Username" autocomplete="username" required />
+                    <input type="password" name="password" placeholder="Password" autocomplete="current-password" required />
+                    <button type="submit">Login</button>
+                </form>
+
+                <div class="register-link">
+                    <a href="{{ url_for('register') }}">Don't have an account? Register here</a>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

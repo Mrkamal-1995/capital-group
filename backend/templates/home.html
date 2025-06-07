@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Capital Group</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary-color: #00e6a8;
+      --bg-dark: #121212;
+      --bg-medium: #1e1e1e;
+      --bg-light: #2a2a2a;
+      --text-light: #dddddd;
+      --text-muted: #bbbbbb;
+      --shadow-dark: 0 2px 8px rgba(0, 0, 0, 0.5);
+      --radius: 12px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      background: var(--bg-medium);
+    }
+
+    .navbar .logo {
+      color:white ;
+      font-size: 1.75rem;
+      font-weight: bold;
+    }
+
+    .navbar nav a {
+      margin-left: 1rem;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--primary-color);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem;
+      background: #1a1a1a;
+    }
+
+    .hero h1 {
+      font-size: 2.75rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #cccccc;
+      margin-bottom: 2rem;
+    }
+
+    .cta-button {
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-color);
+      color: var(--bg-dark);
+      border: none;
+      font-weight: bold;
+      border-radius: var(--radius);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #00c79a;
+    }
+
+    .features {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background: var(--bg-medium);
+    }
+
+    .feature-card {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 280px;
+      box-shadow: var(--shadow-dark);
+      text-align: center;
+    }
+
+    /* Combined Get Started + Advisory Plans Section */
+    #get-started-advisory {
+      background: #1a1a1a;
+      padding: 4rem 2rem;
+      color: var(--text-light);
+    }
+
+    #get-started-advisory h2 {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #get-started-advisory p {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      color: #ccc;
+    }
+
+    .panel-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .panel-card {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: var(--shadow-dark);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      color: #fff;
+    }
+
+    .panel-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 25px rgba(0, 230, 168, 0.4);
+    }
+
+    .panel-card.highlight::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(135deg, #00e6a8, #00ffd5);
+      border-radius: var(--radius);
+      z-index: -1;
+    }
+
+    .panel-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .panel-card .price {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .panel-card .price span {
+      font-size: 0.7rem;
+      color: #aaa;
+    }
+
+    .panel-card ul {
+      list-style: none;
+      padding: 0;
+      color: #ccc;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .panel-card ul li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .panel-card ul li::before {
+      content: "✓";
+      color: var(--primary-color);
+      position: absolute;
+      left: 0;
+    }
+
+    .panel-card a.choose-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.4rem;
+      background: var(--primary-color);
+      color: var(--bg-dark);
+      font-weight: bold;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .panel-card a.choose-btn:hover {
+      background: #00c79a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 2rem;
+      background: var(--bg-medium);
+      color: var(--text-muted);
+    }
+
+    /* Live Indices container */
+#live-indices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.8rem;
+  padding: 1rem 0;
+}
+
+/* Each index card */
+#live-indices > div {
+  background: var(--bg-light);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem 2rem;
+  width: 220px;
+  color: var(--text-light);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Hover effect */
+#live-indices > div:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 230, 168, 0.6);
+}
+
+/* Index name styling */
+#live-indices > div h3 {
+  margin: 0 0 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Price text */
+#live-indices > div p {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Change value with color */
+#live-indices > div p.change-positive {
+  color: #4caf50; /* green */
+  font-weight: 700;
+}
+
+#live-indices > div p.change-negative {
+  color: #e57373; /* red */
+  font-weight: 700;
+}
+
+/* Link styling */
+#live-indices > div a {
+  margin-top: 0.7rem;
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+#live-indices > div a:hover {
+  border-color: var(--primary-color);
+}
+
+
+@media (max-width: 768px) {
+      .features {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .feature-card {
+        width: 90%;
+      }
+
+      /* Keep navbar items in a row */
+      .navbar {
+        flex-direction: column; /* This keeps the logo and nav group stacked */
+        align-items: center; /* Center them when stacked */
+      }
+
+      .navbar nav {
+        display: flex; /* Ensure the nav container uses flex for its children */
+        flex-wrap: wrap; /* Allow links to wrap if too many */
+        justify-content: center; /* Center the links */
+        margin-top: 1rem; /* Add some space above the nav links */
+      }
+
+      .navbar nav a {
+        /* No display: block; here */
+        margin: 0 0.5rem; /* Add horizontal margin between links */
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* --- NEW QR Code Styles --- */
+    #payment-qr-code {
+        max-width: 60%; /* Ensure it's responsive within its container */
+        height: 60; /* Maintain aspect ratio */
+        border: 4px solid var(--primary-color); /* A nice vibrant border */
+        box-shadow: 0 0 15px rgba(0, 230, 168, 0.7); /* Glow effect */
+        padding: 5px; /* Small padding inside the border */
+        border-radius: var(--radius); /* Reuse your defined radius */
+        display: block; /* Ensures it takes up full width of its parent */
+        margin: 0 auto; /* Center the image */
+    }
+    /* --- END NEW QR Code Styles --- */
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">Capital Group</div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}"style="color: #00e6a8; font-weight: bold;">Home</a>
+      <a href="/markets">Markets</a>
+      <a href="/portfolio">Portfolio/Orders</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Invest Smarter with SmartInvest</h1>
+    <p>Trade. Invest. Grow. All in one powerful platform.</p>
+    <a href="#get-started-advisory" class="cta-button">Get Started</a>
+  </section>
+
+  <!-- TradingView Ticker Tape -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols"; [
+        { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500 Index" },
+        { "proName": "FOREXCOM:NSXUSD", "title": "US 100 Cash CFD" },
+        { "proName": "FX_IDC:EURUSD", "title": "EUR to USD" },
+        { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+        { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" }
+      ],
+      "showSymbolLogo"; true,
+      "isTransparent"; true,
+      "displayMode"; "adaptive",
+      "colorTheme"; "dark",
+      "locale"; "en"
+    }
+    </script>
+  </div>
+
+
+  <!-- Live Indices -->
+  <section class="features" style="background:#181818;">
+    <h2 style="text-align: center; width: 100%; color: #00e6a8;">Live Indices</h2>
+    <div class="features" id="live-indices">
+      {% for index in index_data %}
+  <div>
+    <h3>{{ index.name }}</h3>
+    <p>Price: {{ index.last_price }}</p>
+    <p class="{{ 'change-positive' if index.change|float >= 0 else 'change-negative' }}">
+  Change: {{ index.change }}%
+</p>
+
+    <a href="{{ index.tv_url }}" target="_blank" >Click to view chart</a>
+  </div>
+{% endfor %}
+
+    </div>
+  </section>
+
+  <!-- Get Started + Advisory Section -->
+  <section id="get-started-advisory">
+    <h2>Get Started with Capital Group</h2>
+    <p>
+      Join thousands of investors using our platform to grow their wealth. Choose the advisory plan that fits your needs.
+    </p>
+
+    <h2>Advisory Plans</h2>
+<div class="panel-cards">
+
+  <div class="panel-card">
+    <h3>🥈 Basic Package</h3>
+    <div class="price">₹25,000<span>/month</span></div>
+    <ul>
+      <li>✅ 3 Basic Calls per Day (Equity Cash or Options)</li>
+      <li>🎯 Entry/Exit Price with Stop Loss</li>
+      <li>📈 Daily 10–15% ROI (Moderate Risk)</li>
+      <li>📊 Weekly Performance Review</li>
+      <li>📞 Limited WhatsApp Support (Market Hours Only)</li>
+      <li>🔒 No Capital Commitment Required</li>
+    </ul>
+    <a href="/subscribe/basic" class="choose-btn">Choose Basic</a>
+  </div>
+
+  <div class="panel-card">
+    <h3>🥇 HNI Package</h3>
+    <div class="price">₹74,999<span>/month</span></div>
+    <ul>
+      <li>🔔 3 HNI Calls per Day (Intraday/BTST/STBT)</li>
+      <li>📊 F&O Segment (Nifty/Bank Nifty/Stock Options)</li>
+      <li>🔥 Daily 25–30% ROI (Higher Risk–Reward)</li>
+      <li>📈 Personalized Portfolio Suggestions</li>
+      <li>🧾 Weekly Trade Analysis & Report</li>
+      <li>🧑‍💼 Direct Analyst Support (Market Hours)</li>
+    </ul>
+    <a href="/subscribe/hni" class="choose-btn">Choose HNI</a>
+  </div>
+
+  <div class="panel-card">
+    <h3>💎 PMS Package</h3>
+    <div class="price">₹99,999<span>/month</span></div>
+    <ul>
+      <li>🚀 Profit Commitment: ₹4 Lac (Guaranteed)</li>
+      <li>💰 Capital Required: ₹1 Lac</li>
+      <li>🔥 Personalized Trades by Senior Analysts</li>
+      <li>💼 Complete Fund Management Support</li>
+      <li>📊 Real-Time Market Monitoring & Adjustments</li>
+      <li>🧑‍💼 Dedicated Relationship Manager</li>
+      <li>🔒 High-Capital Risk Mitigation Strategy</li>
+      <li>📈 Daily P&L and Capital Growth Tracking</li>
+    </ul>
+    <a href="/subscribe/pms" class="choose-btn">Choose PMS</a>
+  </div>
+
+</div>
+<!-- Subscription Modal -->
+<div id="subscription-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+  background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:9999;">
+  <div style="background: var(--bg-light); padding: 2rem; border-radius: var(--radius); max-width: 400px; width: 90%; position: relative; color: var(--text-light);">
+    <button id="modal-close" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#ccc; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <h3 id="modal-plan-name" style="color: var(--primary-color); margin-bottom: 0.5rem;"></h3>
+    <div id="modal-plan-details" style="margin-bottom:1rem;"></div>
+    <div id="qr-code" style="text-align:center; margin-bottom:1rem;">
+<img src="{{ url_for('static', filename='qr_code.png') }}?v={{ rand_val }}" alt="QR Code" />
+
+
+
+    </div>
+    <button id="confirm-payment" class="cta-button" style="width:100%;">I Have Paid</button>
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Capital Group. All rights reserved.</p>
+  </footer>
+
+  <!-- Live Index JavaScript -->
+  <script>
+    function fetchLiveIndices() {
+      fetch('/get_indices')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            data.data.forEach(index => {
+              const card = document.getElementById(`index-${index.symbol}`);
+              if (card) {
+                const priceSpan = card.querySelector(".price");
+                priceSpan.textContent = index.last_price;
+              }
+            });
+          }
+        })
+        .catch(err => console.error("Error fetching live indices:", err));
+    }
+
+    fetchLiveIndices();
+    setInterval(fetchLiveIndices, 5000);
+
+
+    // Your plans info, match this with backend pricing & features
+const PLAN_DETAILS = {
+  basic: `
+    <ul>
+      <li>3 Basic Calls per Day (Equity Cash or Options)</li>
+      <li>Entry/Exit Price with Stop Loss</li>
+      <li>Daily 10–15% ROI (Moderate Risk)</li>
+      <li>Weekly Performance Review</li>
+      <li>Limited WhatsApp Support (Market Hours Only)</li>
+      <li>No Capital Commitment Required</li>
+    </ul>
+  `,
+  hni: `
+    <ul>
+      <li>3 HNI Calls per Day (Intraday/BTST/STBT)</li>
+      <li>F&O Segment (Nifty/Bank Nifty/Stock Options)</li>
+      <li>Daily 25–30% ROI (Higher Risk–Reward)</li>
+      <li>Personalized Portfolio Suggestions</li>
+      <li>Weekly Trade Analysis & Report</li>
+      <li>Direct Analyst Support (Market Hours)</li>
+    </ul>
+  `,
+  pms: `
+    <ul>
+      <li>Profit Commitment: ₹4 Lac (Guaranteed)</li>
+      <li>Capital Required: ₹1 Lac</li>
+      <li>Personalized Trades by Senior Analysts</li>
+      <li>Complete Fund Management Support</li>
+      <li>Real-Time Market Monitoring & Adjustments</li>
+      <li>Dedicated Relationship Manager</li>
+      <li>High-Capital Risk Mitigation Strategy</li>
+      <li>Daily P&L and Capital Growth Tracking</li>
+    </ul>
+  `
+};
+
+
+  const PLAN_QR = {
+    basic: "{{ url_for('static', filename='qr_code.png') }}",
+    hni: "{{ url_for('static', filename='qr_code.png') }}",
+    pms: "{{ url_for('static', filename='qr_code.png') }}"
+  };
+
+  const modal = document.getElementById('subscription-modal');
+  const modalPlanName = document.getElementById('modal-plan-name');
+  const modalPlanDetails = document.getElementById('modal-plan-details');
+  const qrCodeDiv = document.getElementById('qr-code');
+  const modalCloseBtn = document.getElementById('modal-close');
+  const confirmPaymentBtn = document.getElementById('confirm-payment');
+
+  document.querySelectorAll('.choose-btn').forEach(button => {
+    button.addEventListener('click', e => {
+      e.preventDefault();
+      const plan = button.getAttribute('href').split('/subscribe/')[1];
+      if (!plan || !PLAN_DETAILS[plan]) return alert('Invalid plan');
+
+      // Show modal
+      modalPlanName.textContent = plan.toUpperCase() + ' Package';
+      modalPlanDetails.innerHTML = PLAN_DETAILS[plan];
+      qrCodeDiv.innerHTML = `<img src="${PLAN_QR[plan]}" alt="Scan to Pay for ${plan}" id="payment-qr-code" style="border-radius: 12px;" />`;
+      modal.style.display = 'flex';
+
+      // Store plan for confirmation
+      confirmPaymentBtn.dataset.plan = plan;
+    });
+  });
+
+  modalCloseBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  confirmPaymentBtn.addEventListener('click', () => {
+    const plan = confirmPaymentBtn.dataset.plan;
+    if (!plan) return alert('No plan selected.');
+
+    fetch(`/subscribe/${plan}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paid: true })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert(data.message || 'Subscription successful!');
+        modal.style.display = 'none';
+        window.location.href = '/dashboard';
+      } else {
+        alert(data.message || 'Subscription failed. Please try again.');
+      }
+    })
+    .catch(err => {
+      alert('Error: ' + err.message);
+    });
+  });
+  </script>
+</body>
+</html>

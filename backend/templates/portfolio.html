@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio / Orders</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f1f1f;
+      padding: 1rem 2rem;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      color:white;
+      font-weight: bold;
+    }
+
+    .navbar nav a {
+      color: #ccc;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .navbar nav a:hover,
+    .navbar nav .active {
+      color: #00e6a8;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .profit-loss-box {
+      background-color: #1e2a2a;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: bold;
+      color: neon rgb(41, 255, 41);
+    }
+
+    .profit-loss-box.positive {
+  color: #29ff29; /* bright green */
+}
+
+.profit-loss-box.negative {
+  color: #ff4c4c; /* bright red */
+}
+
+
+    .margin-box {
+      background-color: #1e1e1e;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: bold;
+      color: #ffa500;
+    }
+
+    .order-filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-filters button {
+      padding: 0.6rem 1.2rem;
+      background-color: #2a2a2a;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .order-filters button.active,
+    .order-filters button:hover {
+      background-color: #00e6a8;
+      color: #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+
+    thead {
+      background-color: #1a1a1a;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      color: #00e6a8;
+    }
+
+    tr:hover {
+      background-color: #1f1f1f;
+    }
+    .status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+.status-pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.status-executed {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-cancelled {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: nowrap;       /* Prevent wrapping */
+    overflow-x: auto;        /* Allow horizontal scroll if needed */
+    padding: 1rem;
+  }
+
+  .navbar nav {
+    display: flex !important;  /* force flex display */
+    flex-direction: row !important; /* horizontal */
+    gap: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  }
+
+  .navbar nav a {
+    white-space: nowrap; /* Prevent text wrap */
+    padding: 0.5rem 0.8rem;
+    border-bottom: none;
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  .menu-toggle {
+    display: none; /* Hide hamburger */
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .header-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-filters {
+    flex-direction: column;
+  }
+
+  .order-filters button {
+    width: 100%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .status-badge {
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Capital Group</div>
+  <nav>
+    <a href="{{ url_for('dashboard') }}">Home</a>
+    <a href="/markets">Markets</a>
+    <a href="/portfolio" class="active">Portfolio/Orders</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="/logout">Logout</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="header-flex">
+    <h1>Trade History / Orders</h1>
+
+   {% if total_profit_loss is defined %}
+  <div class="profit-loss-box {% if total_profit_loss < 0 %}negative{% else %}positive{% endif %}">
+    Total P&amp;L: ₹{{ "%.2f"|format(total_profit_loss) }}
+  </div>
+{% endif %}
+
+
+    {% if total_margin_used is defined %}
+      <div class="margin-box">
+        Total Trading Value: ₹{{ "%.2f"|format(total_margin_used) }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="order-filters">
+    <button id="btnPendingOrders" class="active">Pending Orders</button>
+    <button id="btnOpenOrders">Open Orders</button>
+    <button id="btnExecutedOrders">Executed Orders</button>
+  </div>
+
+  <div id="ordersContent">
+
+    <!-- Pending Orders -->
+    <table id="pendingOrdersTable">
+    <thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Stock</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Margin used</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  {% for order in pending_orders %}
+  <tr>
+    <td data-label="Order ID">{{ order.id }}</td>
+    <td data-label="Stock">{{ order.stock_symbol }}</td>
+    <td data-label="Type">{{ order.order_type }}</td>
+    <td data-label="Quantity">{{ order.quantity }}</td>
+    <td data-label="Price">₹{{ "%.2f"|format(order.price) }}</td>
+    <td data-label="Margin used">₹{{ "%.2f"|format(order.quantity * order.price) }}</td>
+    <td data-label="Status">
+      <span class="status-badge status-pending">{{ order.status }}</span>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+    </table>
+
+    <!-- Open Orders -->
+    <table id="openOrdersTable" style="display: none;">
+      <thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Stock</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Margin used</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  {% for order in open_orders %}
+  <tr>
+    <td data-label="Order ID">{{ order.id }}</td>
+    <td data-label="Stock">{{ order.stock_symbol }}</td>
+    <td data-label="Type">{{ order.order_type }}</td>
+    <td data-label="Quantity">{{ order.quantity }}</td>
+    <td data-label="Price">₹{{ "%.2f"|format(order.price) }}</td>
+    <td data-label="Margin used">₹{{ "%.2f"|format(order.quantity * order.price) }}</td>
+    <td data-label="Status">
+      <span class="status-badge status-executed">{{ order.status }}</span>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+    </table>
+
+    <!-- Executed Orders -->
+    <table id="executedOrdersTable" style="display: none;">
+      <thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Stock</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Executed Price</th>
+    <th>Margin used</th>
+    <th>Profit/Loss</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  {% for order in executed_orders %}
+  <tr>
+    <td data-label="Order ID">{{ order.id }}</td>
+    <td data-label="Stock">{{ order.stock_symbol }}</td>
+    <td data-label="Type">{{ order.order_type }}</td>
+    <td data-label="Quantity">{{ order.quantity }}</td>
+    <td data-label="Executed Price">₹{{ "%.2f"|format(order.price) }}</td>
+    <td data-label="Margin used">₹{{ "%.2f"|format(order.quantity * order.price) }}</td>
+    <td data-label="Profit/Loss">₹{{ "%.2f"|format(order.profit_loss) }}</td>
+    <td data-label="Status">
+      <span class="status-badge status-executed">{{ order.status }}</span>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+    </table>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const pendingBtn = document.getElementById('btnPendingOrders');
+    const openBtn = document.getElementById('btnOpenOrders');
+    const executedBtn = document.getElementById('btnExecutedOrders');
+
+    const pendingTable = document.getElementById('pendingOrdersTable');
+    const openTable = document.getElementById('openOrdersTable');
+    const executedTable = document.getElementById('executedOrdersTable');
+
+    function showOrders(type) {
+      pendingTable.style.display = 'none';
+      openTable.style.display = 'none';
+      executedTable.style.display = 'none';
+
+      pendingBtn.classList.remove('active');
+      openBtn.classList.remove('active');
+      executedBtn.classList.remove('active');
+
+      if (type === 'pending') {
+        pendingTable.style.display = 'table';
+        pendingBtn.classList.add('active');
+      } else if (type === 'open') {
+        openTable.style.display = 'table';
+        openBtn.classList.add('active');
+      } else if (type === 'executed') {
+        executedTable.style.display = 'table';
+        executedBtn.classList.add('active');
+      }
+    }
+
+    pendingBtn.addEventListener('click', () => showOrders('pending'));
+    openBtn.addEventListener('click', () => showOrders('open'));
+    executedBtn.addEventListener('click', () => showOrders('executed'));
+
+    showOrders('pending');
+  });
+</script>
+
+</body>
+</html>

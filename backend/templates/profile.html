@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0e1117;
+  color: #e6e6e6;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 2em;
+  background: #1f2937;
+  border-bottom: 1px solid #2e3440;
+  flex-wrap: wrap;
+}
+
+.navbar .logo {
+  font-size: 1.6em;
+  font-weight: bold;
+  color: white;
+}
+
+.navbar nav a {
+  margin-left: 1.2em;
+  color: #cccccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar nav a:hover,
+.navbar nav a:focus {
+  color: #00e6a8;
+}
+
+.profile-wrapper {
+  max-width: 1000px;
+  margin: 3em auto;
+  padding: 2.5em;
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1em;
+  margin-bottom: 2em;
+}
+
+.profile-header h2 {
+  font-size: 1.7em;
+  color: #00e6a8;
+  margin: 0;
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  justify-content: space-between;
+}
+
+.metric-card {
+  flex: 1 1 300px;
+  background: #222831;
+  padding: 1.5em;
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.metric-card:hover {
+  background: #2d3748;
+  transform: translateY(-3px);
+}
+
+.metric-card i {
+  font-size: 2em;
+  margin-bottom: 0.4em;
+  color: #00e6a8;
+}
+
+.metric-label {
+  font-size: 1em;
+  color: #b0b0b0;
+  margin-bottom: 0.3em;
+}
+
+.metric-value {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.positive {
+  color:rgb(41, 255, 41);;
+}
+
+.negative {
+  color: #ff5e5e;
+}
+
+#chargesPanel {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  background: #2b313d;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+
+  .add-funds-section {
+   /* Increase from default to wider */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+  background: #21262d;
+  width: 99%;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.demat-section {
+  margin-top: 2.5em;
+  padding: 2em;
+  width: 99%;
+  background: #21262d;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.add-funds-section h3,
+.demat-section h3 {
+  color: #00e6a8;
+  font-size: 1.3em;
+  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.add-funds-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.add-funds-section input[type="number"] {
+  padding: 0.9em;
+  border: none;
+  border-radius: 6px;
+  background: #2e3440;
+  color: #fff;
+  font-size: 1em;
+}
+
+.add-funds-section button {
+  padding: 0.9em;
+  border: none;
+  border-radius: 6px;
+  background: #00e6a8;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-funds-section button:hover {
+  background: #00c9a3;
+}
+
+.user-detail,
+.demat-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  font-size: 1em;
+}
+
+.user-detail div,
+.demat-detail div {
+  flex: 1 1 250px;
+  background: #2b2f38;
+  padding: 1em;
+  border-radius: 8px;
+  line-height: 1.6em;
+}
+
+.demat-detail div {
+  border-left: 4px solid #00e6a8;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5em;
+  background: #1f2937;
+  color: #bbb;
+  margin-top: 4em;
+}
+
+.alert {
+  padding: 1em;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+}
+
+.alert-success {
+  background: #1c4031;
+  color: #71ffb0;
+}
+
+.alert-danger {
+  background: #402121;
+  color: #ff8484;
+}
+@media (max-width: 768px) {
+  .metrics,
+  .user-detail,
+  .demat-detail {
+    flex-direction: column;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar nav {
+    margin-top: 0.5em;
+  }
+
+  .metric-card {
+    flex: 1 1 100%;
+  }
+
+  .user-detail div,
+  .demat-detail div {
+    flex: 1 1 100%;
+  }
+
+  #balanceHistoryPanel,
+  #chargesPanel {
+    width: 100%;
+  }
+
+  .add-funds-section,
+  .demat-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .add-funds-section form input[type="number"],
+  .add-funds-section button {
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Capital Group</div>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/markets">Markets</a>
+    <a href="/portfolio">Portfolio/Orders</a>
+    <a href="/profile" style="color: #00e6a8; font-weight: bold;">Profile</a>
+    <a href="/logout">Logout</a>
+  </nav>
+</header>
+
+<div class="profile-wrapper">
+  <div class="profile-header">
+    <h2>Welcome, {{ username }}</h2>
+    <span><i class="fas fa-user-circle fa-2x" style="color: #00e6a8;"></i></span>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="metrics">
+    <div class="metric-card" style="cursor: pointer;" onclick="toggleBalanceHistory()">
+  <i class="fas fa-wallet"></i>
+  <div class="metric-label">Account Balance</div>
+  <div class="metric-value">₹ {{ balance }}</div>
+  <small style="color: #00e6a8;">(Click to view history)</small>
+</div>
+
+<!-- Deposit & Withdraw History Panel -->
+<div id="balanceHistoryPanel" class="metric-card" style="display: none; flex-direction: column; align-items: flex-start; text-align: left; max-height: 400px; overflow-y: auto;">
+  <h4 style="color: #00e6a8;"><i class="fas fa-history"></i> Transaction History</h4>
+  
+  <h5 style="margin-top: 0.5em; color: #00e6a8;">Deposit History</h5>
+  {% if deposit_history %}
+  <table style="width: 100%; border-collapse: collapse; color: #ccc;">
+    <thead>
+      <tr>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Date</th>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Amount (₹)</th>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for deposit in deposit_history %}
+      <tr>
+        <td style="padding: 8px;">{{ deposit.date.strftime('%d %b %Y') }}</td>
+        <td style="padding: 8px;">{{ deposit.amount }}</td>
+        <td style="padding: 8px;">{{ deposit.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color: #888;">No deposit history available.</p>
+  {% endif %}
+  
+  <h5 style="margin-top: 1.5em; color: #00e6a8;">Withdraw History</h5>
+  {% if withdraw_history %}
+  <table style="width: 100%; border-collapse: collapse; color: #ccc;">
+    <thead>
+      <tr>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Date</th>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Amount (₹)</th>
+        <th style="border-bottom: 1px solid #444; padding: 8px; text-align: left;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for withdraw in withdraw_history %}
+      <tr>
+        <td style="padding: 8px;">{{ withdraw.date.strftime('%d %b %Y') }}</td>
+        <td style="padding: 8px;">{{ withdraw.amount }}</td>
+        <td style="padding: 8px;">{{ withdraw.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color: #888;">No withdraw history available.</p>
+  {% endif %}
+</div>
+    <div class="metric-card" style="cursor: pointer;" onclick="toggleChargesPanel('{{ profit_loss }}')">
+  <i class="fas fa-chart-line"></i>
+  <div class="metric-label">Profit / Loss</div>
+  <div class="metric-value {{ 'positive' if profit_loss|float >= 0 else 'negative' }}">
+
+ {{ profit_loss | float | round(2) }}
+</div>
+
+  <small style="color: #00e6a8;">(Click to view charges)</small>
+</div>
+
+
+
+  <div id="chargesPanel" class="metric-card" style="display: none; flex-direction: column; align-items: flex-start; text-align: left;">
+  <h4 style="color: #00e6a8;"><i class="fas fa-receipt"></i> Charges Breakdown</h4>
+  <p><strong>Tax Charges:</strong> ₹ <span id="taxCharges">{{ tax_charges }}</span></p>
+<p><strong>Brokerage Charges:</strong> ₹ <span id="brokerageCharges">{{ brokerage_charges }}</span></p>
+<hr style="border-color: #444; width: 100%;">
+<p><strong>Total Charges:</strong> ₹ <span id="totalCharges">{{ (tax_charges + brokerage_charges) | round(2) }}</span></p>
+
+
+</div>
+
+
+  <div class="add-funds-section">
+    <h3><i class="fas fa-id-card"></i> Your Details</h3>
+    <div class="user-detail">
+      <div><strong>Full Name:</strong><br>{{ user_details.full_name }}</div>
+      <div><strong>Email:</strong><br>{{ user_details.email }}</div>
+      <div><strong>Phone Number:</strong><br>{{ user_details.phone }}</div>
+      <div><strong>PAN Number:</strong><br>{{ user_details.pan_number }}</div>
+      <div><strong>Address:</strong><br>{{ user_details.location }}</div>
+    </div>
+  </div>
+
+<div class="demat-section">
+  <h3><i class="fas fa-university"></i> Bank Account Details</h3>
+  <div class="demat-detail">
+    <div><strong>Bank Name:</strong><br>{{ user_details.bank_name }}</div>
+    <div><strong>Account Number:</strong><br>{{ user_details.bank_account_number }}</div>
+    <div><strong>IFSC Code:</strong><br>{{ user_details.ifsc_code }}</div>
+    <div><strong>Account Holder Name:</strong><br>{{ user_details.account_holder_name }}</div>
+  </div>
+</div>
+
+ <div class="demat-section">
+  <h3><i class="fas fa-building"></i> Demat Account Details</h3>
+  <div class="demat-detail">
+    <div><strong>Demat Account Number:</strong><br>{{ user_details.demat_account_number }}</div>
+    <div><strong>DP ID:</strong><br>{{ user_details.dp_id }}</div>
+    <div><strong>Depository Participant (DP):</strong><br>{{ user_details.dp_name }}</div>
+    <div><strong>Depository:</strong><br>{{ user_details.depository }}</div>
+  </div>
+</div>
+
+<div class="demat-section">
+  <h3><i class="fas fa-star"></i> Subscription Details</h3>
+  <div class="demat-detail">
+    <div>
+      <strong>Subscribed Plan:</strong><br>
+      {% if user_details.subscribed_plan %}
+        <span style="color: #00ffbf; font-weight: bold;">{{ user_details.subscribed_plan|upper }}</span>
+      {% else %}
+        <span style="color: #ccc;">Not Subscribed</span>
+      {% endif %}
+    </div>
+    <div>
+      <strong>Subscribed On:</strong><br>
+      {% if user_details.subscribed_on %}
+        <span style="color: #cccccc;">{{ user_details.subscribed_on.strftime('%d %B %Y') }}</span>
+      {% else %}
+        <span style="color: #ccc;">N/A</span>
+      {% endif %}
+    </div>
+    <div>
+      <strong>Validity:</strong><br>
+      {% if user_details.subscribed_on %}
+        <span style="color: #e6b800;">30 Days from subscription</span>
+      {% else %}
+        <span style="color: #ccc;">N/A</span>
+      {% endif %}
+    </div>
+    <div>
+      <strong>Status:</strong><br>
+      {% if user_details.subscribed_plan %}
+        <span style="color: #00e676;">Active</span>
+      {% else %}
+        <span style="color: #ff5e5e;">Inactive</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+  <div class="add-funds-section">
+    <h3><i class="fas fa-plus-circle"></i> Add Funds</h3>
+    <form id="addFundsForm">
+      <input type="number" name="amount" id="amount" placeholder="Enter amount to add (₹)" required min="100" />
+      <button type="submit">Add Funds</button>
+    </form>
+
+    <div id="qrSection" style="display: none; margin-top: 2em; text-align: center;">
+      <p>Scan the QR code below to complete your payment:</p>
+      <img src="{{ url_for('static', filename='qr_code.png') }}" alt="QR Code" style="max-width: 200px; margin: 1em auto;" />
+      <form method="POST" action="/confirm_payment">
+        <input type="hidden" name="amount" id="confirmAmount" />
+        <button type="submit" style="margin-top: 1em;">I Have Paid</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Capital Group. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById("addFundsForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const amount = document.getElementById("amount").value;
+    if (!amount || amount < 100) {
+      alert("Please enter a valid amount (minimum ₹100)");
+      return;
+    }
+    document.getElementById("confirmAmount").value = amount;
+    document.getElementById("qrSection").style.display = "block";
+  });
+
+  function toggleChargesPanel(profitLoss) {
+  const panel = document.getElementById("chargesPanel");
+  const isVisible = panel.style.display === "flex";
+
+  if (isVisible) {
+    panel.style.display = "none";
+  } else {
+    panel.style.display = "flex";
+
+  }
+}
+
+function toggleBalanceHistory() {
+  const panel = document.getElementById("balanceHistoryPanel");
+  const isVisible = panel.style.display === "flex";
+
+  if (isVisible) {
+    panel.style.display = "none";
+  } else {
+    panel.style.display = "flex";
+  }
+}
+
+
+</script>
+
+</body>
+</html>

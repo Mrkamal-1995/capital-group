@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Markets</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      background: #1b1f3a;
+    }
+
+    .navbar .logo {
+      font-size: 1.7em;
+      font-weight: bold;
+      color: white;
+    }
+
+    .navbar nav a {
+      margin-left: 1.2em;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 1em;
+    }
+
+    .navbar nav a:hover,
+    .navbar nav .active {
+      color: #00e6a8;
+      font-weight: bold;
+    }
+
+    .market-wrapper {
+      max-width: 1400px;
+      margin: 2em auto;
+      padding: 2em;
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      color: #00e6a8;
+      margin-bottom: 1.5em;
+    }
+
+    .tradingview-widget-container {
+      margin-bottom: 2em;
+    }
+
+    .widgets-wrapper {
+      display: flex;
+      gap: 3em;
+      margin-bottom: 3em;
+      flex-wrap: wrap;
+    }
+
+    .tv-market-widget {
+      flex: 1;
+      min-width: 300px;
+      background: #2b2b2b;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .tv-chart-widget {
+      flex: 2;
+      min-width: 400px;
+      background: #2b2b2b;
+      border-radius: 10px;
+      padding: 1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5em;
+      background: #1b1f3a;
+      color: #ccc;
+      font-size: 0.95em;
+    }
+
+      @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1em;
+    }
+
+    .navbar .logo {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    .navbar nav {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .navbar nav a {
+      margin: 0.5em 0;
+      font-size: 1.1em;
+    }
+
+    .market-wrapper {
+      padding: 1em;
+      margin: 1em;
+    }
+
+    .widgets-wrapper {
+      flex-direction: column;
+      gap: 1.5em;
+    }
+
+    .tv-market-widget,
+    .tv-chart-widget {
+      min-width: 100% !important;
+      width: 100% !important;
+      height: auto;
+    }
+
+    .tv-chart-widget p {
+      font-size: 0.9em;
+    }
+
+    footer {
+      font-size: 0.85em;
+      padding: 1em;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar .logo {
+      font-size: 1.2em;
+    }
+
+    .navbar nav a {
+      font-size: 1em;
+    }
+
+    .tv-chart-widget p {
+      font-size: 0.8em;
+    }
+  }
+
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Capital Group</div>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/markets" class="active" style="color: #00e6a8; font-weight: bold;">Markets</a>
+    <a href="/portfolio">Portfolio/Orders</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout">Logout</a>
+  </nav>
+</header>
+
+<div class="market-wrapper">
+  <h2>Live Market Overview</h2>
+
+  <!-- TradingView Ticker Tape -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols"; [
+        { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500 Index" },
+        { "proName": "FOREXCOM:NSXUSD", "title": "US 100 Cash CFD" },
+        { "proName": "FX_IDC:EURUSD", "title": "EUR to USD" },
+        { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+        { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" }
+      ],
+      "showSymbolLogo"; true,
+      "isTransparent"; true,
+      "displayMode"; "adaptive",
+      "colorTheme"; "dark",
+      "locale"; "en"
+    }
+    </script>
+  </div>
+
+  <!-- Chart + Market Overview -->
+  <div class="widgets-wrapper">
+    <div class="tv-market-widget">
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+      {
+        "colorTheme"; "dark",
+        "dateRange"; "12M",
+        "showChart"; true,
+        "locale"; "en",
+        "width"; "100%",
+        "height"; "550",
+        "isTransparent"; false,
+        "showSymbolLogo"; true,
+        "tabs"; [
+          {
+            "title": "Indices",
+            "symbols": [
+              { "s": "NSE:NIFTY_50", "d": "NIFTY 50" },
+              { "s": "BSE:SENSEX", "d": "SENSEX" },
+              { "s": "NSE:BANKNIFTY", "d": "BANKNIFTY" }
+            ],
+            "originalTitle": "Indices"
+          }
+        ]
+      }
+      </script>
+    </div>
+
+    <div class="tv-chart-widget">
+      <div id="tradingview-widget-container"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+      <script type="text/javascript">
+        new TradingView.widget({
+          "container_id": "tradingview-widget-container",
+          "symbol": "NSE:NIFTY",
+          "interval": "1",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "toolbar_bg": "#f1f3f6",
+          "enable_publishing": false,
+          "hide_side_toolbar": false,
+          "allow_symbol_change": true,
+          "show_popup_button": true,
+          "popup_width": "1000",
+          "popup_height": "650",
+          "width": "100%",
+          "height": "550"
+        });
+      </script>
+      <!-- Instructional Note -->
+      <p style="margin-top: 0.8em; font-size: 0.95em; color: #aaa; text-align: center;">
+        Click on TradingView to show live data price and chart.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Capital Group. All rights reserved.</p>
+</footer>
+
+<script>
+  function updateLiveIndices() {
+    $.getJSON('/live_indices', function(data) {
+      $('#nifty').text(data['NIFTY 50'] || 'N/A');
+      $('#sensex').text(data['SENSEX'] || 'N/A');
+      $('#banknifty').text(data['BANKNIFTY'] || 'N/A');
+      $('#midcpnifty').text(data['MIDCPNIFTY'] || 'N/A');
+    }).fail(function() {
+      $('#live-indices').html('<p style="color:red;">Failed to load live index data.</p>');
+    });
+  }
+
+  updateLiveIndices();
+  setInterval(updateLiveIndices, 10000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Capital Group Registration</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Reset & base */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #0b0b0b;
+            color: #00ff80;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            background-color: #1e1e1e;
+            max-width: 480px;
+            width: 100%;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Logo */
+        .logo {
+            display: block;
+            margin: 0 auto 25px;
+            max-width: 140px;
+            filter: brightness(0) invert(1); /* invert logo for dark bg */
+        }
+
+        /* Heading */
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #00e6a8;
+        }
+
+        /* Form styles */
+        form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color:white;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="file"] {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 15px;
+          background: #2c2c2c;
+            color: #fff;
+            transition: border-color 0.3s;
+        }
+
+        form input[type="text"]::placeholder,
+        form input[type="email"]::placeholder {
+            color: white;
+        }
+
+        form input[type="text"]:focus,
+        form input[type="email"]:focus,
+        form input[type="file"]:focus {
+             
+            outline: none;
+              border-color: #1e90ff;
+            box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.4);
+            background: #2a2a2a;
+        }
+
+        /* Submit button */
+        button[type="submit"] {
+            background-color: #1e90ff;
+            border: none;
+            padding: 12px 0;
+            width: 100%;
+             color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.25s ease-in-out;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #3ca1ff;
+        }
+
+        /* Link below button */
+        .login-link {
+            text-align: center;
+            margin-top: 12px;
+        }
+        .login-link a {
+             color: #1e90ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 520px) {
+            .container {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo (replace src with your logo path) -->
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Capital Group Logo" class="logo" />
+
+        <h2>Register with Capital Group</h2>
+
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('register') }}">
+            <label for="full_name">Full Name:</label>
+            <input type="text" name="full_name" id="full_name" placeholder="Your full name" required />
+
+            <label for="mobile">Mobile Number:</label>
+            <input type="text" name="mobile" id="mobile" placeholder="10-digit mobile number" required />
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="example@mail.com" required />
+
+            <label for="account_number">Bank Account Number:</label>
+            <input type="text" name="account_number" id="account_number" placeholder="Bank account number" required />
+
+            <label for="ifsc">IFSC Code:</label>
+            <input type="text" name="ifsc" id="ifsc" placeholder="Bank IFSC code" required />
+
+            <label for="passbook_photo">Bank Passbook Photo:</label>
+            <input type="file" name="passbook_photo" id="passbook_photo" accept="image/*" required />
+
+            <label for="aadhaar_front">Aadhaar Card Front:</label>
+            <input type="file" name="aadhaar_front" id="aadhaar_front" accept="image/*" required />
+
+            <label for="aadhaar_back">Aadhaar Card Back:</label>
+            <input type="file" name="aadhaar_back" id="aadhaar_back" accept="image/*" required />
+
+            <label for="pan_photo">PAN Card Photo:</label>
+            <input type="file" name="pan_photo" id="pan_photo" accept="image/*" required />
+
+            <button type="submit">Register</button>
+
+            <div class="login-link">
+                <a href="{{ url_for('login') }}">Already have an account? Login here</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
